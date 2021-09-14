@@ -12,11 +12,23 @@ Author.create = async (connection, authorFirstname, authorLastname) => {
                     (`id`, `firstname`, `lastname`)\
                      VALUES (NULL, "'+ authorFirstname + '", "' + authorLastname + '")';
     const [rows] = await connection.execute(sql);
-    const response = `${authorFirstname} ${authorLastname} sekmingai irasytas!`
-    return response;
+    return `${authorFirstname} ${authorLastname} sekmingai irasytas!`;
 }
 
 Author.listAll = async (connection) => {
+    const sql = 'SELECT * \
+        FROM `authors`';
+    const [rows] = await connection.execute(sql);
+
+    count = 0;
+    const infoList = [];
+    for (let { firstname, lastname } of rows) {
+        infoList.push(`${++count}) ${firstname} ${lastname}`)
+    };
+    const title = `Autoriu sarasas:\n`;
+    return title + infoList.join(`\n`);
+
+    return `${authorFirstname} ${authorLastname} sekmingai irasytas!`;
 }
 
 Author.findById = async (connection, authorId) => {
