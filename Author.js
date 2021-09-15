@@ -32,17 +32,53 @@ Author.listAll = async (connection) => {
 }
 
 Author.findById = async (connection, authorId) => {
+    const sql = 'SELECT * FROM `authors` WHERE `id` =' + authorId;
+    const [rows] = await connection.execute(sql);
+    if (rows.length === 0) {
+        return 'Nera tokio autoriaus'
+    }
+    else {
+        return `Pasirinktas autorius: ${rows[0].firstname}, ${rows[0].lastname}`;
+    }
 }
 
 Author.findByFirstname = async (connection, authorFirstname) => {
+    const sql = 'SELECT * FROM `authors` WHERE `firstname` LIKE "%' + authorFirstname + '%"';
+    const [rows] = await connection.execute(sql);
+
+    if (rows.length === 0) {
+        return 'Nera tokio autoriaus'
+    }
+    else {
+        return `Rastas Autorius pagal varda ${authorFirstname}: ${rows[0].firstname}, ${rows[0].lastname}`
+    }
+
 }
 
 Author.findByLastname = async (connection, authorLastname) => {
+    const sql = 'SELECT * FROM `authors` WHERE `lastname` LIKE "%' + authorLastname + '%"';
+    const [rows] = await connection.execute(sql);
+
+    if (rows.length === 0) {
+        return 'Nera tokio autoriaus'
+    }
+    else {
+        return `Rastas Autorius pagal pavarde ${authorLastname}: ${rows[0].lastname}, ${rows[0].firstname}`
+    }
 }
 
 Author.updatePropertyById = async (connection, authorId, propertyName, propertyValue) => {
-}
+    const sql = 'UPDATE `authors`\
+                     SET `' + propertyName + '` = "' + propertyValue + '"\
+                      WHERE `authors`.`id` =' + authorId;
+    [rows] = await connection.execute(sql);
 
+    if (rows.affectedRows === 0) {
+        return `Pagal duota ID - ${authorId} autorius nerastas, atnaujinti nepavyko!`;
+    } else {
+        return `Autoriaus duomenys atnaujinti sekmingai!`;
+    }
+}
 Author.delete = async (connection, authorId) => {
 }
 
