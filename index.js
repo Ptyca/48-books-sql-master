@@ -33,7 +33,7 @@ app.init = async () => {
     console.log(sarasaPagalId);
     console.log('');
 
-    const sarasaPagalVarda = await Author.findByFirstname(conn, 'Mike');
+    const sarasaPagalVarda = await Author.findByFirstname(conn, 'a');
     console.log(sarasaPagalVarda);
     console.log('');
 
@@ -45,9 +45,25 @@ app.init = async () => {
     console.log(sarasaPagalAutoriausID);
     console.log('');
 
-    const istrintiPagalAutoriausID = await Author.delete(conn, 2);
+
+
+    const sarasaPagalVarda2 = await Author.findByFirstname(conn, 'a');
+    console.log(sarasaPagalVarda2);
+    console.log('');
+
+    const sarasaPagalAutoriausID2 = await Author.updatePropertyById(conn, 1, 'lastname', 'Kepenis');
+    console.log(sarasaPagalAutoriausID2);
+    console.log('');
+
+    const istrintiPagalAutoriausID = await Author.delete(conn, 78);
     console.log(istrintiPagalAutoriausID);
     console.log('');
+
+    const knygaCreate = await Books.create(conn, 1, 'Taika ir Taika', 1222);
+    console.log(knygaCreate);
+
+
+
 }
 
 app.init();
