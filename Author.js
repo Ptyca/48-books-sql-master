@@ -73,13 +73,21 @@ Author.updatePropertyById = async (connection, authorId, propertyName, propertyV
                       WHERE `authors`.`id` =' + authorId;
     [rows] = await connection.execute(sql);
 
-    if (rows.affectedRows === 0) {
+    if (rows.length === 0) {
         return `Pagal duota ID - ${authorId} autorius nerastas, atnaujinti nepavyko!`;
     } else {
         return `Autoriaus duomenys atnaujinti sekmingai!`;
     }
 }
 Author.delete = async (connection, authorId) => {
+    const sql = 'DELETE FROM `authors`\
+                      WHERE `authors`.`id` =' + authorId;
+    const [rows] = await connection.execute(sql);
+    if (rows.length === 0) {
+        return `Pagal duota ID - ${authorId} autorius nerastas, atnaujinti nepavyko!`;
+    } else {
+        return `Autoriaus nurodytu ID: ${authorId} istrintas sekmingai!`;
+    }
 }
 
 module.exports = Author;

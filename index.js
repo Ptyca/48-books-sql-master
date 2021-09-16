@@ -41,11 +41,13 @@ app.init = async () => {
     console.log(sarasaPagalPavarde);
     console.log('');
 
-    const sarasaPagalAutoriausID = await Author.updatePropertyById(conn, 2, 'lastname', 'Kepenis');
+    const sarasaPagalAutoriausID = await Author.updatePropertyById(conn, 3, 'lastname', 'Kepenis');
     console.log(sarasaPagalAutoriausID);
     console.log('');
 
-
+    const istrintiPagalAutoriausID = await Author.delete(conn, 2);
+    console.log(istrintiPagalAutoriausID);
+    console.log('');
 }
 
 app.init();
