@@ -56,7 +56,10 @@ db.createTableBooks = async (connection) => {
     try {
         const sql = 'CREATE TABLE IF NOT EXISTS `books` (\
                         `id` int(10) NOT NULL AUTO_INCREMENT,\
-                        PRIMARY KEY(`id`)\
+                        PRIMARY KEY(`id`),\
+                        `authorId` INT(10) NOT NULL,\
+                        `title` VARCHAR(40) NOT NULL,\
+                        `releaseYear` INT(4) NOT NULL\
                     ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_swedish_ci';
         await connection.execute(sql);
     } catch (error) {
