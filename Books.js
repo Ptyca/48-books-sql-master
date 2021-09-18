@@ -2,7 +2,7 @@
  * Kaip rasyti JSDOc'sus?
  * Link: https://jsdoc.app
  */
-
+const Validation = require('./Validations');
 const Books = {};
 
 /**
@@ -14,6 +14,18 @@ const Books = {};
  * @returns {Promise<string>} Tekstas, apibudinantis, koks autorius ir kurias metais isleido knyga.
  */
 Books.create = async (connection, authorId, bookName, bookReleaseYear) => {
+    //VALIDATIONS
+    if (!Validation.IDisValid(authorId)) {
+        return `Autoriaus ID turi buti teigiamas sveikasis skaicius!`;
+    }
+    if (!Validation.isText(bookName)) {
+        return `Parametras turi buti ne tuscias tekstas!`;
+    }
+    if (!Validation.isYearValid(bookReleaseYear)) {
+        return `Parametras turi buti teigiamas sveikasis skaicius!`;
+    }
+
+
     const sql = 'INSERT INTO books (authorId,title, releaseYear)\
     VALUES ("'+ authorId + '", "' + bookName + '", "' + bookReleaseYear + '")';
     [rows] = await connection.execute(sql);
@@ -30,7 +42,6 @@ Books.listAll = async (connection) => {
     const sql = 'SELECT * \
         FROM `books`';
     const [rows] = await connection.execute(sql);
-    console.log(rows)
     if (rows.length === 0) {
         return 'sarasas yra tuscias'
     }
@@ -50,6 +61,11 @@ Books.listAll = async (connection) => {
  * @returns {Promise<Object[]>} Sarasas su knygu objektais.
  */
 Books.findByName = async (connection, bookName) => {
+    //VALIDATIONS
+    if (!Validation.isText(bookName)) {
+        return `Parametras turi buti ne tuscias tekstas!`;
+    }
+
     const sql = 'SELECT * FROM `books` WHERE `title` LIKE "%' + bookName + '%"';
     const [rows] = await connection.execute(sql);
     console.log(rows)
@@ -90,6 +106,7 @@ Books.findByYear = async (connection, bookReleaseYear) => {
  * @returns Atnaujintas pasirinktas knygos stulpelis
  */
 Books.updateById = async (connection, bookId, propertyName, propertyValue) => {
+
     const props = ['id', 'title', 'releaseYear'];
     if (!props.includes(propertyName)) {
         return 'BLOGIS, stulpelis nerastas';

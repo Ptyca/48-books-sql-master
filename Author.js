@@ -1,3 +1,4 @@
+const Validation = require('./Validations');
 const Author = {};
 
 /**
@@ -8,6 +9,13 @@ const Author = {};
  * @returns {Promise<string>} Sukurtas autorius.
  */
 Author.create = async (connection, authorFirstname, authorLastname) => {
+    if (!Validation.isText(authorFirstname)) {
+        return `Parametras turi buti ne tuscias tekstas!`;
+    }
+    if (!Validation.isText(authorLastname)) {
+        return `Parametras turi buti ne tuscias tekstas!`;
+    }
+
     const sql = 'INSERT INTO `authors` \
                     (`id`, `firstname`, `lastname`)\
                      VALUES (NULL, "'+ authorFirstname + '", "' + authorLastname + '")';
@@ -45,6 +53,10 @@ Author.listAll = async (connection) => {
  * @returns {Promise<string>} Autorius pagal pasirinkta ID
  */
 Author.findById = async (connection, authorId) => {
+    if (!Validation.IDisValid(authorId)) {
+        return `Autoriaus ID turi buti teigiamas sveikasis skaicius!`;
+    }
+
     const sql = 'SELECT * FROM `authors` WHERE `id` =' + authorId;
     const [rows] = await connection.execute(sql);
     // if (rows.length === 0) {
@@ -64,6 +76,10 @@ Author.findById = async (connection, authorId) => {
  * @returns {Promise<string>} Autorius pagal Varda
  */
 Author.findByFirstname = async (connection, authorFirstname) => {
+    if (!Validation.isValidFirstName(authorFirstname)) {
+        return `Parametras turi buti ne tuscias tekstas!`;
+    }
+
     const sql = 'SELECT * FROM `authors` WHERE `firstname` LIKE "%' + authorFirstname + '%"';
     const [rows] = await connection.execute(sql);
     console.log(rows)
@@ -85,6 +101,10 @@ Author.findByFirstname = async (connection, authorFirstname) => {
  * @returns {Promise<string>} Autorius  paieska pagal Pavarde
  */
 Author.findByLastname = async (connection, authorLastname) => {
+    if (!Validation.isValidFirstName(authorLastname)) {
+        return `Parametras turi buti ne tuscias tekstas!`;
+    }
+
     const sql = 'SELECT * FROM `authors` WHERE `lastname` LIKE "%' + authorLastname + '%"';
     const [rows] = await connection.execute(sql);
     let response = 'Nera tokio autoriaus'
